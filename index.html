@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solitaire Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2e8b57;
+            margin: 0;
+            padding: 0;
+        }
+        .game-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+        .deck, .foundation, .tableau {
+            margin: 10px;
+            padding: 10px;
+            border: 2px solid white;
+            border-radius: 8px;
+            background-color: #006400;
+            width: 120px;
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .card {
+            width: 100px;
+            height: 140px;
+            border: 1px solid black;
+            border-radius: 5px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .hidden {
+            background-color: gray;
+            color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; color: white;">Solitaire</h1>
+    <div class="game-container">
+        <div id="deck" class="deck">Deck</div>
+        <div id="foundation" class="foundation">Foundation</div>
+        <div id="tableau" class="tableau">Tableau</div>
+    </div>
+
+    <script>
+        // Initial game setup
+        const deck = document.getElementById('deck');
+        const foundation = document.getElementById('foundation');
+        const tableau = document.getElementById('tableau');
+
+        const suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
+        const values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+        
+        // Create a deck of cards
+        function createDeck() {
+            let cards = [];
+            for (let suit of suits) {
+                for (let value of values) {
+                    cards.push({ suit, value });
+                }
+            }
+            return cards;
+        }
+
+        // Shuffle the deck
+        function shuffleDeck(deck) {
+            for (let i = deck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [deck[i], deck[j]] = [deck[j], deck[i]];
+            }
+            return deck;
+        }
+
+        // Render cards
+        function renderCard(card) {
+            const cardElement = document.createElement('div');
+            cardElement.className = 'card';
+            cardElement.textContent = `${card.value} ${card.suit}`;
+            return cardElement;
+        }
+
+        // Deal cards into tableau
+        function dealCards(deck) {
+            tableau.innerHTML = '';
+            for (let i = 0; i < 7; i++) {
+                const card = deck.pop();
+                const cardElement = renderCard(card);
+                tableau.appendChild(cardElement);
+            }
+        }
+
+        // Initialize the game
+        function initGame() {
+            let cards = createDeck();
+            cards = shuffleDeck(cards);
+            dealCards(cards);
+        }
+
+        // Start the game
+        initGame();
+    </script>
+</body>
+</html>
